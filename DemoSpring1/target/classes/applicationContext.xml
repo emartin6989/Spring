@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	<!-- declaration du bean developpeur -->
+	<bean id="developpeur1"
+		class="com.huios.DemoSpring1.Developpeur"> 
+		<property name="nom" value="Jason" />
+		<property name="anneesExperience" value="8" />
+	</bean>
+	<!-- decla du bean chef dev -->
+	<bean id="developpeur2"
+		class="com.huios.DemoSpring1.Developpeur">
+		<property name="nom" value="Bourne" />
+		<property name="anneesExperience" value="16" />
+	</bean>
+	<!-- decla du bean societe puis injection du dev et du chef dev dans la 
+		societe -->
+	<bean name="societe"
+		class="com.huios.DemoSpring1.SocieteDevLogiciel">
+		<property name="developpeur" ref="developpeur1" />
+		<property name="chefDeveloppeur" ref="developpeur2" />
+	</bean>
+</beans>

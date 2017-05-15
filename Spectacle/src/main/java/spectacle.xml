@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+<!-- permet l'utilisation d'@Autowired -->
+<context:annotation-config/>
+
+<!-- permet de détecter les @Components -->
+<context:component-scan base-package="metier"/>
+
+
+	<bean id="saxophone" class="metier.Saxophone" scope="prototype">
+	</bean>
+
+	<bean id="guitare" class="metier.Guitare">
+	</bean>
+
+	<bean name="olivier" class="metier.Musicien">
+		<property name="morceau" value="Vive le vent..."></property>
+		<property name="instrument" ref="saxophone"></property>
+	</bean>
+
+	<bean name="jeanmarc" class="metier.Musicien">
+		<property name="instrument" ref="saxophone"></property>
+	</bean>
+
+	<bean name="caroline" class="metier.Musicien">
+		<property name="instrument" ref="violon"></property>
+	</bean>
+
+	<bean name="julien" class="metier.MultiInstrumentiste">
+		<property name="instruments">
+			<list>
+				<ref bean="saxophone" />
+				<ref bean="saxophone" />
+				<ref bean="violon" />
+				<ref bean="guitare" />
+			</list>
+		</property>
+	</bean>
+
+	<bean name="alain" class="metier.MultiInstrumentiste">
+		<property name="instruments">
+			<set>
+				<ref bean="saxophone" />
+				<ref bean="saxophone" />
+				<ref bean="violon" />
+				<ref bean="guitare" />
+			</set>
+		</property>
+	</bean>
+
+	<bean name="louis" class="metier.Musicien">
+		<property name="morceau" value="#{olivier.morceau}"></property>
+		<property name="instrument" ref="violon"></property>
+	</bean>
+
+	<!-- exemple d'autowiring by name, Michel va jouer avec un saxophone car 
+		c'est le bean que l'on a défini avec un id du même nom que l'attribut "instrument" 
+		de la classe Musicien -->
+	<bean id="instrument" class="metier.Saxophone" />
+	<bean name="michel" class="metier.Musicien" autowire="byName">
+		<property name="morceau" value="petit ours brun"></property>
+	</bean>
+
+	<!-- exemple d'autowiring by type, Maurice va jouer avec un violon car c'est 
+		le bean que l'on a défini avec un primary="true" et qui est de type instrument 
+		comme l'attribut "instrument" de la classe Musicien -->
+	<bean id="violon" class="metier.Violon" primary="true">
+	</bean>
+	<bean name="maurice" class="metier.Musicien" autowire="byType">
+		<property name="morceau" value="petit ours brun"></property>
+	</bean>
+
+	<!-- utiliation d'un bean parent pour une propriété partagée par plusieurs 
+		beans -->
+	<bean name="parent" class="metier.Musicien" abstract="true">
+		<property name="morceau" value="la marseillaise"></property>
+		<property name="instrument" ref="violon"></property>
+	</bean>
+
+	<!-- definition des beans enfants, celui-ci jouera la Marseillaise mais 
+		avec un saxophone car l'on a redéfini l'instrument dans le bean fils -->
+	<bean name="martin" parent="parent">
+		<property name="instrument" ref="saxophone"></property>
+	</bean>
+
+
+</beans>
