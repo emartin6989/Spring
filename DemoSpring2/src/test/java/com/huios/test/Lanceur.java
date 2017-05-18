@@ -17,8 +17,8 @@ public class Lanceur {
 		User u = (User) appContext.getBean("user");
 		User u2 = (User) appContext.getBean("user");
 
-		u.setNom("Lulu");
-		u.setPrenom("Lolo");
+		u.setNom("fanchon");
+		u.setPrenom("tutute");
 		u2.setNom("Titi");
 
 		System.out.println("bean user =" + u.getNom());
@@ -35,18 +35,19 @@ public class Lanceur {
 		}
 
 		System.out.println("--------------------------------SUPPRIMER-----------------------------------");
-		// service.supprimerUser(9);
+		//service.supprimerUser(26);
 		
 		
 		System.out.println("--------------------------------MC-----------------------------------");
-		List<User> listeMC = service.listerUserParMc("o");
+		List<User> listeMC = service.listerUserParMc("f");
 		for (User u4 : listeMC) {
 			System.out.println(u4);
 		}
 
 		System.out.println("--------------------------------NOM-----------------------------------");
-		User u5 = service.listerUserParNom("toto");
-		System.out.println(u5);
+		User u5 = service.listerUserParNom("Toto");
+			System.out.println(u5);
+	
 		// 4 fermeture du contexte
 		appContext.close();
 	}

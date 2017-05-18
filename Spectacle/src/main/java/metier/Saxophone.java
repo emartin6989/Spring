@@ -1,6 +1,6 @@
 package metier;
 
-import org.springframework.stereotype.Component;
+
 
 public class Saxophone implements Instrument {
 

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
-<!-- permet l'utilisation d'@Autowired -->
-<context:annotation-config/>
+	<!-- permet l'utilisation d'@Autowired -->
+	<context:annotation-config />
 
-<!-- permet de détecter les @Components -->
-<context:component-scan base-package="metier"/>
+	<!-- permet de détecter les @Components -->
+	<context:component-scan base-package="metier, intercepteurs" />
+	
+	<!-- permet de détecter les @Aspect -->
+		<aop:aspectj-autoproxy />
 
 
 	<bean id="saxophone" class="metier.Saxophone" scope="prototype">
@@ -53,10 +57,9 @@
 		</property>
 	</bean>
 
-	<bean name="louis" class="metier.Musicien">
-		<property name="morceau" value="#{olivier.morceau}"></property>
-		<property name="instrument" ref="violon"></property>
-	</bean>
+	<!-- <bean name="louis" class="metier.Musicien"> <property name="morceau" 
+		value="#{olivier.morceau}"></property> <property name="instrument" ref="violon"></property> 
+		</bean> -->
 
 	<!-- exemple d'autowiring by name, Michel va jouer avec un saxophone car 
 		c'est le bean que l'on a défini avec un id du même nom que l'attribut "instrument" 
@@ -75,6 +78,48 @@
 		<property name="morceau" value="petit ours brun"></property>
 	</bean>
 
+	<!-- Mise en oeuvre AOP -->
+	<!-- déclaration du bean intercepteur -->
+	<bean id="spectateurs" class="intercepteurs.Spectateurs" />
+	<!-- mise en oeuvre du tissage -->
+	<aop:config>
+		<!-- definition du lieu d'interception -->
+		<aop:pointcut expression="execution(* *.jouer(..))" id="servicePointcut" />
+		<!-- mise en oeuvre de l'aspect -->
+		<aop:aspect id="spectateursAspect" ref="spectateurs">
+			<!-- methode appelée avant -->
+			<aop:before method="prendPlace" pointcut-ref="servicePointcut" />
+			<!-- methode appelee apres si succes -->
+			<aop:after-returning method="applaudit"
+				returning="result" pointcut-ref="servicePointcut" />
+		</aop:aspect>
+	</aop:config>
+	<!-- fin de la config aop -->
+
+	<!-- Mise en oeuvre AOP -->
+	<!-- déclaration du bean intercepteur -->
+	<bean id="musiciens" class="intercepteurs.Musiciens" />
+	<!-- mise en oeuvre du tissage -->
+	<aop:config>
+		<!-- definition du lieu d'interception -->
+		<aop:pointcut expression="execution(* *.performe(..))"
+			id="servicePointcut2" />
+		<!-- mise en oeuvre de l'aspect -->
+		<aop:aspect id="spectateursAspect" ref="musiciens">
+			<!-- methode appelée avant -->
+			<aop:around method="jejoue" pointcut-ref="servicePointcut2" />
+		</aop:aspect>
+	</aop:config>
+	<!-- fin de la config aop -->
+
+<!--  config aop via annotations -->
+<!-- 	<bean id="spectateurs2" class="intercepteurs.Spectateurs2" /> -->
+	<!-- <aop:config>
+		<aop:aspect ref="spectateurs2">
+		</aop:aspect>
+	</aop:config> -->
+	
+	
 	<!-- utiliation d'un bean parent pour une propriété partagée par plusieurs 
 		beans -->
 	<bean name="parent" class="metier.Musicien" abstract="true">

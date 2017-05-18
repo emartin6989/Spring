@@ -6,8 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +14,7 @@ import com.huios.metier.User;
 @Transactional
 public class DaoImpJPA implements IDao {
 
-	@PersistenceContext
+	@PersistenceContext(name= "testPU")
 	private EntityManager em;
 	
 	
@@ -26,6 +24,7 @@ public class DaoImpJPA implements IDao {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> listerUser() {
 		return  em.createQuery("Select u from User u").getResultList();
@@ -43,6 +42,7 @@ public class DaoImpJPA implements IDao {
 		return em.find(User.class, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> listerUserParMc(String nom) {
 		Query query = em.createQuery("Select u from User u where u.nom like :nom");

@@ -32,7 +32,8 @@ public class DaoImpHibernate implements IDao {
 	@Override
 	public List<User> listerUser() {
 		String hql = "FROM User";
-		Query query = getSession().createQuery(hql);
+		@SuppressWarnings("unchecked")
+		Query<User> query = getSession().createQuery(hql);
 		return query.list();
 	}
 	
@@ -50,7 +51,8 @@ public class DaoImpHibernate implements IDao {
 	@Override
 	public List<User> listerUserParMc(String nom) {
 		String hql = "FROM User as u WHERE u.nom like :nom";
-	Query query = getSession().createQuery(hql);
+	@SuppressWarnings("unchecked")
+	Query<User> query = getSession().createQuery(hql);
 	query.setParameter("nom", "%"+nom+"%");
 		return query.list();
 	}
@@ -58,7 +60,8 @@ public class DaoImpHibernate implements IDao {
 	@Override
 	public User listerUserParNom(String nom) {
 		String hql = "FROM User as u WHERE u.nom like :nom";
-		Query query = getSession().createQuery(hql);
+		@SuppressWarnings("unchecked")
+		Query<User> query = getSession().createQuery(hql);
 		query.setParameter("nom", nom);
 		query.setMaxResults(1);
 			return (User) query.getSingleResult();

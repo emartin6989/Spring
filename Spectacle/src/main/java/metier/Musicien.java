@@ -1,7 +1,6 @@
 package metier;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +16,7 @@ public class Musicien implements Performeur {
 	public Musicien() {
 			super();
 		}
+	
 	public void performe() throws PerformanceException {
 		System.out.print("joue " + morceau + " : ");
 		instrument.jouer();

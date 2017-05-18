@@ -2,7 +2,7 @@ package com.huios.Spectacle;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import metier.MultiInstrumentiste;
+
 import metier.Performeur;
 
 public class TestInjection {
@@ -15,9 +15,9 @@ public class TestInjection {
 		Performeur olivier = (Performeur) appContext.getBean("olivier");
 		Performeur caroline = (Performeur) appContext.getBean("caroline");
 		Performeur jeanmarc = (Performeur) appContext.getBean("jeanmarc");
-		MultiInstrumentiste julien = (MultiInstrumentiste) appContext.getBean("julien");
-		MultiInstrumentiste alain = (MultiInstrumentiste) appContext.getBean("alain");
-		Performeur louis = (Performeur) appContext.getBean("louis");
+		Performeur julien = (Performeur) appContext.getBean("julien");
+		Performeur alain = (Performeur) appContext.getBean("alain");
+		//Performeur louis = (Performeur) appContext.getBean("louis");
 		Performeur michel = (Performeur) appContext.getBean("michel");
 		Performeur maurice = (Performeur) appContext.getBean("maurice");
 		Performeur martin = (Performeur) appContext.getBean("martin");
@@ -39,8 +39,8 @@ public class TestInjection {
 		System.out.println("Alain");
 		alain.performe();
 
-		System.out.println("Louis");
-		louis.performe();
+		//System.out.println("Louis");
+		//louis.performe();
 
 		System.out.println("Michel");
 		michel.performe();

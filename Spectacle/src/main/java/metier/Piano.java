@@ -1,6 +1,5 @@
 package metier;
 
-import org.springframework.stereotype.Component;
 
 public class Piano implements Instrument {
 
